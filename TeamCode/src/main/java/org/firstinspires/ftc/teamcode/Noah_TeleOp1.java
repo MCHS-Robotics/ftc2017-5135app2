@@ -84,6 +84,7 @@ public class Noah_TeleOp1 extends OpMode
         telemetry.addData("Status", "Initialized");
         telemetry.addData("fL", frontleft.getPower());
         telemetry.addData("fR", frontright.getPower());
+        telemetry.addData("lift", lift.getPower());
     }
 
     /*
@@ -117,17 +118,37 @@ public class Noah_TeleOp1 extends OpMode
         // - This uses basic math to combine motions and is easier to drive straight.
         double drive = -gamepad1.left_stick_y;
         double turn  =  gamepad1.right_stick_x;
-        frontleft.setPower(Range.clip(drive + turn, -1.0, 1.0) ;
-        frontright.setPower(Range.clip(drive - turn, -1.0, 1.0) ;
-
+        frontleft.setPower(Range.clip(drive + turn, -1.0, 1.0);
+        frontright.setPower(Range.clip(drive - turn, -1.0, 1.0);
+        if(gamepad2.left_bumper)
+        {
+            pincher.setPower(0.25;
+        }
+        else if(gamepad2.right_bumper)
+        {
+            pincher.setPower(-0.25);
+        }
+        else
+        {
+            pincher.setPower(0.05);
+        }
+        if(gamepad2.dpad_up)
+        {
+            lift.setPower(0.2);
+        }
+        else if(gamepad2.dpad_down);
+        {
+            lift.setPower(-0.2);
+        }
+        else
+        {
+            lift.setPower(0);
+        }
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
         // leftPower  = -gamepad1.left_stick_y ;
         // rightPower = -gamepad1.right_stick_y ;
 
-        // Send calculated power to wheels
-        fL.setPower(leftPower);
-        fR.setPower(rightPower);
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
