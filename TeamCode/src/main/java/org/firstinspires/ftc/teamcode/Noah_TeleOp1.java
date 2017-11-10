@@ -73,7 +73,7 @@ public class Noah_TeleOp1 extends OpMode
         frontleft  = hardwareMap.get(DcMotor.class, "fL");
         frontright = hardwareMap.get(DcMotor.class, "fR");
         pincher = hardwareMap.crservo.get("pincher");
-        lift = hardwareMap.dcMotor.get("lift")
+        lift = hardwareMap.dcMotor.get("lift");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -108,21 +108,21 @@ public class Noah_TeleOp1 extends OpMode
     @Override
     public void loop() {
         // Setup a variable for each drive wheel to save power level for telemetry
-        double leftPower;
-        double rightPower;
+        //double leftPower;
+        //double rightPower;
 
         // Choose to drive using either Tank Mode, or POV Mode
         // Comment out the method that's not used.  The default below is POV.
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = -gamepad1.left_stick_y;
-        double turn  =  gamepad1.right_stick_x;
-        frontleft.setPower(Range.clip(drive + turn, -1.0, 1.0);
-        frontright.setPower(Range.clip(drive - turn, -1.0, 1.0);
+        double drive = gamepad1.left_stick_y;
+        double turn  =  -gamepad1.right_stick_x;
+        frontleft.setPower(Range.clip(drive + turn, -1.0, 1.0));
+        frontright.setPower(Range.clip(drive - turn, -1.0, 1.0));
         if(gamepad2.left_bumper)
         {
-            pincher.setPower(0.25;
+            pincher.setPower(0.25);
         }
         else if(gamepad2.right_bumper)
         {
@@ -130,13 +130,14 @@ public class Noah_TeleOp1 extends OpMode
         }
         else
         {
-            pincher.setPower(0.05);
+            pincher.setPower(-0.1);
         }
+
         if(gamepad2.dpad_up)
         {
             lift.setPower(0.2);
         }
-        else if(gamepad2.dpad_down);
+        else if(gamepad2.dpad_down)
         {
             lift.setPower(-0.2);
         }
@@ -152,7 +153,7 @@ public class Noah_TeleOp1 extends OpMode
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+        telemetry.addData("Motors", "left (%.2f), right (%.2f)");
     }
 
     /*
