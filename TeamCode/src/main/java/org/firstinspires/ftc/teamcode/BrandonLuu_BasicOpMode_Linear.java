@@ -27,7 +27,7 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package org.firstinspires.ftc.team5135;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -56,7 +56,7 @@ public class BrandonLuu_BasicOpMode_Linear extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private Servo Drive = null;
+    private Servo drive = null;
 
     @Override
     public void runOpMode() {
@@ -66,14 +66,14 @@ public class BrandonLuu_BasicOpMode_Linear extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        Drive  = hardwareMap.servo(Servo.class, "drive");
+        drive  = hardwareMap.servo.get("drive");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        Drive.setPosition(0);
-        Drive.setPosition(90);
+        drive.setPosition(0);
+        drive.setPosition(90);
+
     }
-}
 }
 
 
