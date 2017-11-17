@@ -60,16 +60,12 @@ public class BrandonLuu_BasicOpMode_Linear extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        drive  = hardwareMap.servo.get("drive");
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+        waitForStart();
+        runtime.reset();
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-        drive  = hardwareMap.servo.get("drive");
-
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
         drive.setPosition(0);
         drive.setPosition(90);
 
