@@ -30,13 +30,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -61,7 +58,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @Autonomous(name="Trevor_Auto1", group="Linear Opmode")
 
-public class Trevor_Auto1 extends LinearOpMode {
+public class Trevor_Auto2 extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -104,8 +101,8 @@ public class Trevor_Auto1 extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        forward(19);
-        pivotRight(90);
+        forward(8);
+        pivotLeft(90);
         forward(10);
 
         relicTrackables.activate();
@@ -115,31 +112,33 @@ public class Trevor_Auto1 extends LinearOpMode {
             vuMark = RelicRecoveryVuMark.from(relicTemplate);
         }
         if(vuMark == RelicRecoveryVuMark.LEFT){
-            backward(10);
+            backward(20);
             pivotRight(90);
-            forward(10);
+            forward(36);
             pivotLeft(90);
+            forward(8);
+            pivotRight(90);
             forward(17);
         }
         else if(vuMark == RelicRecoveryVuMark.CENTER){
-            backward(10);
+            backward(20);
             pivotRight(90);
-            forward(18);
-            pivotLeft(90);
+            forward(36);
             forward(17);
         }
         else if(vuMark == RelicRecoveryVuMark.RIGHT){
-            backward(10);
+            backward(20);
             pivotRight(90);
-            forward(26);
+            forward(36);
+            pivotLeft(90);
+            forward(8);
             pivotLeft(90);
             forward(17);
         }
         else{
-            backward(10);
+            backward(20);
             pivotRight(90);
-            forward(18);
-            pivotLeft(90);
+            forward(36);
             forward(17);
         }
 
