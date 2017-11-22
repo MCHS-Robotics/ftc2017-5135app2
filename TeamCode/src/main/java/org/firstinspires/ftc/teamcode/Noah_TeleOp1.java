@@ -120,26 +120,26 @@ public class Noah_TeleOp1 extends OpMode
         double turn  =  -gamepad1.right_stick_x;
         frontleft.setPower(Range.clip(drive + turn, -1.0, 1.0));
         frontright.setPower(Range.clip(drive - turn, -1.0, 1.0));
-        if(gamepad2.left_bumper)
-        {
-            pincher.setPower(0.25);
-        }
-        else if(gamepad2.right_bumper)
+        if(gamepad2.x)
         {
             pincher.setPower(-0.25);
         }
+        else if(gamepad2.b)
+        {
+            pincher.setPower(0.25);
+        }
         else
         {
-            pincher.setPower(-0.1);
+            pincher.setPower(0);
         }
 
         if(gamepad2.dpad_up)
         {
-            lift.setPower(0.2);
+            lift.setPower(-0.2);
         }
         else if(gamepad2.dpad_down)
         {
-            lift.setPower(-0.2);
+            lift.setPower(0.2);
         }
         else
         {
