@@ -71,8 +71,9 @@ public class BrandonLuu_BasicOpMode_Linear extends LinearOpMode {
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         drive.setPosition(0);
+        sleep(1000);
         drive.setPosition(90);
-
+        sleep(1000);
     }
 }
 
