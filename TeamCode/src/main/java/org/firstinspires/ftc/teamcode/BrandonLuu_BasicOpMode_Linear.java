@@ -53,10 +53,32 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="Servo Test1", group="Testing")
 public class BrandonLuu_BasicOpMode_Linear extends LinearOpMode {
-
-    // Declare OpMode members.
+    /**
+     * // Declare OpMode members.
+     * private ElapsedTime runtime = new ElapsedTime();
+     * private Servo drive = null;
+     *
+     * @Override public void runOpMode() {
+     * telemetry.addData("Status", "Initialized");
+     * telemetry.update();
+     * <p>
+     * // Initialize the hardware variables. Note that the strings used here as parameters
+     * // to 'get' must correspond to the names assigned during the robot configuration
+     * // step (using the FTC Robot Controller app on the phone).
+     * drive  = hardwareMap.servo.get("drive");
+     * <p>
+     * // Most robots need the motor on one side to be reversed to drive forward
+     * // Reverse the motor that runs backwards when connected directly to the battery
+     * drive.setPosition(0);
+     * sleep(1000);
+     * drive.setPosition(90);
+     * sleep(1000);
+     * }
+     */
+// Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private Servo drive = null;
+    private DcMotor leftDrive = null;
+    private DcMotor rightDrive = null;
 
     @Override
     public void runOpMode() {
@@ -66,13 +88,18 @@ public class BrandonLuu_BasicOpMode_Linear extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        drive  = hardwareMap.servo.get("drive");
+        leftDrive  = hardwareMap.get(DcMotor.class, "fL");
+        rightDrive = hardwareMap.get(DcMotor.class, "fR");
+        leftDrive.setTargetPosition(360);
+        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDrive.setTargetPosition(-360);
+        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-        drive.setPosition(0);
-        sleep(1000);
-        drive.setPosition(90);
+        waitForStart();
+        runtime.reset();
+
+        leftDrive.setPower(.5);
+        rightDrive.setPower(.5);
         sleep(1000);
     }
 }
