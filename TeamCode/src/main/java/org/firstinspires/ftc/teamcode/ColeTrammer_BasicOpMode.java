@@ -51,7 +51,6 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 @TeleOp(name="ColeTrammer_BasicOpMode", group="Linear Opmode")
-@Disabled
 public class ColeTrammer_BasicOpMode extends LinearOpMode {
 
     // Declare OpMode members.
@@ -147,8 +146,8 @@ public class ColeTrammer_BasicOpMode extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             moveForward(0.3);
-            moveBackward(0.3);
-            turnRight(0.3);
+//            moveBackward(0.3);
+//            turnRight(0.3);
         }
     }
 }
