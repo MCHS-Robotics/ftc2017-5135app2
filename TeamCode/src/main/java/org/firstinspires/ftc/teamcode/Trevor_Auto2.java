@@ -56,7 +56,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Trevor_Auto1", group="Linear Opmode")
+@Autonomous(name="Trevor_Auto2", group="Linear Opmode")
 
 public class Trevor_Auto2 extends LinearOpMode {
 

@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -104,9 +105,10 @@ public class Trevor_Auto1 extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        forward(19);
+        setPinch(true);
+        backward(19);
         pivotRight(90);
-        forward(10);
+        backward(10);
 
         relicTrackables.activate();
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
@@ -115,32 +117,28 @@ public class Trevor_Auto1 extends LinearOpMode {
             vuMark = RelicRecoveryVuMark.from(relicTemplate);
         }
         if(vuMark == RelicRecoveryVuMark.LEFT){
-            backward(10);
-            pivotRight(90);
-            forward(10);
+            forward(20);
             pivotLeft(90);
             forward(17);
+            setPinch(false);
         }
         else if(vuMark == RelicRecoveryVuMark.CENTER){
-            backward(10);
-            pivotRight(90);
-            forward(18);
+            forward(28);
             pivotLeft(90);
             forward(17);
+            setPinch(false);
         }
         else if(vuMark == RelicRecoveryVuMark.RIGHT){
-            backward(10);
-            pivotRight(90);
-            forward(26);
+            backward(36);
             pivotLeft(90);
             forward(17);
+            setPinch(false);
         }
         else{
-            backward(10);
-            pivotRight(90);
-            forward(18);
+            backward(28);
             pivotLeft(90);
             forward(17);
+            setPinch(false);
         }
 
     }
@@ -206,5 +204,17 @@ public class Trevor_Auto1 extends LinearOpMode {
         left.setPower(0);
         right.setPower(0);
     }
+    private void setPinch(boolean open)
+    {
+        if(open == true)
+        {
+            pincher.setDirection(DcMotorSimple.Direction.FORWARD);
+        }
+        else
+        {
+            pincher.setDirection(DcMotorSimple.Direction.REVERSE);
+        }
+    }
+
 }
 
