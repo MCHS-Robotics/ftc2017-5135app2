@@ -83,10 +83,12 @@ public class Trevor_Auto1 extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        left  = hardwareMap.get(DcMotor.class, "fL");
+        left = hardwareMap.get(DcMotor.class, "fL");
         right = hardwareMap.get(DcMotor.class, "fR");
         pincher = hardwareMap.crservo.get("pincher");
         lift = hardwareMap.dcMotor.get("lift");
+        left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -105,6 +107,9 @@ public class Trevor_Auto1 extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        forward(25);
+    }
+/*
         setPinch(true);
         backward(19);
         pivotRight(90);
@@ -142,9 +147,11 @@ public class Trevor_Auto1 extends LinearOpMode {
         }
 
     }
+    */
     private void forward(float in)
     {
         int pos = (int)((encoder * in)/(4 * Math.PI));
+        /*
         left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         left.setTargetPosition(pos);
         right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -153,6 +160,20 @@ public class Trevor_Auto1 extends LinearOpMode {
         while(left.isBusy()){
             telemetry.addData("Motor Encoder", "Left: " + left.getCurrentPosition());
             telemetry.update();
+        }
+        left.setPower(0);
+        right.setPower(0);
+        */
+        int position = 0;
+
+        while(left.getCurrentPosition() <= pos)
+        {
+            left.setPower(.5);
+            right.setPower(-.5);
+            position = left.getCurrentPosition();
+            telemetry.addData("Motor Encoder", "Left: " + position);
+            telemetry.update();
+
         }
         left.setPower(0);
         right.setPower(0);
