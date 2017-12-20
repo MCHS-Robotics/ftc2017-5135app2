@@ -71,7 +71,7 @@ public class Trevor_Auto1 extends LinearOpMode {
     private DcMotor lift = null;
     private CRServo pincher = null;
     final private int encoder = 1120;
-    final private float turnRadius = (float) 16.9;
+    final private float turnRadius =  16.9f;
 
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -87,6 +87,7 @@ public class Trevor_Auto1 extends LinearOpMode {
         right = hardwareMap.get(DcMotor.class, "fR");
         pincher = hardwareMap.crservo.get("pincher");
         lift = hardwareMap.dcMotor.get("lift");
+        right.setDirection(DcMotor.Direction.REVERSE);
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -107,7 +108,7 @@ public class Trevor_Auto1 extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        forward(25);
+        forward(24);
     }
 /*
         setPinch(true);
@@ -128,7 +129,7 @@ public class Trevor_Auto1 extends LinearOpMode {
             setPinch(false);
         }
         else if(vuMark == RelicRecoveryVuMark.CENTER){
-            forward(28);
+            forward(28);pos
             pivotLeft(90);
             forward(17);
             setPinch(false);
@@ -148,35 +149,36 @@ public class Trevor_Auto1 extends LinearOpMode {
 
     }
     */
+
+    /**
+     * a complete failure
+     * @param in    a useless variable
+     */
     private void forward(float in)
     {
         int pos = (int)((encoder * in)/(4 * Math.PI));
-        /*
+
         left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        left.setTargetPosition(pos);
         right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        left.setPower(.5);
+        left.setTargetPosition(pos);
+        left.setPower(-.5);
         right.setPower(.5);
-        while(left.isBusy()){
-            telemetry.addData("Motor Encoder", "Left: " + left.getCurrentPosition());
-            telemetry.update();
-        }
-        left.setPower(0);
-        right.setPower(0);
-        */
-        int position = 0;
-
-        while(left.getCurrentPosition() <= pos)
+        while(left.isBusy())
         {
-            left.setPower(.5);
-            right.setPower(-.5);
-            position = left.getCurrentPosition();
-            telemetry.addData("Motor Encoder", "Left: " + position);
+            telemetry.addData("Motor Encoder", "Left Pos: " + left.getCurrentPosition());
+            telemetry.addLine();
+            telemetry.addData("Motor Encoder", "Right Pos: " + right.getCurrentPosition());
+            telemetry.addLine();
+            telemetry.addData("Power","Left Pow: " + left.getPower());
+            telemetry.addLine();
+            telemetry.addData("Power","Right Pow: " + right.getPower());
+            telemetry.addLine();
+            telemetry.addData("Target","Left Tar: " + left.getTargetPosition());
             telemetry.update();
-
         }
         left.setPower(0);
         right.setPower(0);
+        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
     private void backward(float in)
     {
@@ -187,7 +189,13 @@ public class Trevor_Auto1 extends LinearOpMode {
         left.setPower(-.5);
         right.setPower(-.5);
         while(left.isBusy()){
-            telemetry.addData("Motor Encoder", "Left: " + left.getCurrentPosition());
+            telemetry.addData("Motor Encoder", "Left Pos: " + left.getCurrentPosition());
+            telemetry.addLine();
+            telemetry.addData("Motor Encoder", "Right Pos: " + right.getCurrentPosition());
+            telemetry.addLine();
+            telemetry.addData("Power","Left Pow: " + left.getPowerFloat());
+            telemetry.addLine();
+            telemetry.addData("Power","Right Pow: " + right.getPowerFloat());
             telemetry.update();
         }
         left.setPower(0);
