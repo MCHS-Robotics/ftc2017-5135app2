@@ -84,7 +84,7 @@ public class Trevor_Auto1 extends LinearOpMode {
     public void runOpMode() {
 
         left = hardwareMap.get(DcMotor.class, "fL");
-        right = hardwareMap.get(DcMotor.class, "fR");
+        right = hardwareMap.get(DcMotor.class,  "fR");
         pincher = hardwareMap.crservo.get("pincher");
         lift = hardwareMap.dcMotor.get("lift");
         right.setDirection(DcMotor.Direction.REVERSE);
@@ -108,47 +108,9 @@ public class Trevor_Auto1 extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        forward(24);
+        forward(12);
+        backward(12);
     }
-/*
-        setPinch(true);
-        backward(19);
-        pivotRight(90);
-        backward(10);
-
-        relicTrackables.activate();
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-        while(vuMark == RelicRecoveryVuMark.UNKNOWN)
-        {
-            vuMark = RelicRecoveryVuMark.from(relicTemplate);
-        }
-        if(vuMark == RelicRecoveryVuMark.LEFT){
-            forward(20);
-            pivotLeft(90);
-            forward(17);
-            setPinch(false);
-        }
-        else if(vuMark == RelicRecoveryVuMark.CENTER){
-            forward(28);pos
-            pivotLeft(90);
-            forward(17);
-            setPinch(false);
-        }
-        else if(vuMark == RelicRecoveryVuMark.RIGHT){
-            backward(36);
-            pivotLeft(90);
-            forward(17);
-            setPinch(false);
-        }
-        else{
-            backward(28);
-            pivotLeft(90);
-            forward(17);
-            setPinch(false);
-        }
-
-    }
-    */
 
     /**
      * a complete failure
@@ -159,11 +121,12 @@ public class Trevor_Auto1 extends LinearOpMode {
         int pos = (int)((encoder * in)/(4 * Math.PI));
 
         left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         left.setTargetPosition(pos);
-        left.setPower(-.5);
+        right.setTargetPosition(pos);
+        left.setPower(.5);
         right.setPower(.5);
-        while(left.isBusy())
+        while(left.isBusy() && right.isBusy())
         {
             telemetry.addData("Motor Encoder", "Left Pos: " + left.getCurrentPosition());
             telemetry.addLine();
@@ -178,64 +141,51 @@ public class Trevor_Auto1 extends LinearOpMode {
         }
         left.setPower(0);
         right.setPower(0);
+        telemetry.update();
         left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
     private void backward(float in)
     {
-        int pos = (int)((encoder * in)/(4 * Math.PI));
-        left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        left.setTargetPosition(-pos);
-        right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        left.setPower(-.5);
-        right.setPower(-.5);
-        while(left.isBusy()){
-            telemetry.addData("Motor Encoder", "Left Pos: " + left.getCurrentPosition());
-            telemetry.addLine();
-            telemetry.addData("Motor Encoder", "Right Pos: " + right.getCurrentPosition());
-            telemetry.addLine();
-            telemetry.addData("Power","Left Pow: " + left.getPowerFloat());
-            telemetry.addLine();
-            telemetry.addData("Power","Right Pow: " + right.getPowerFloat());
-            telemetry.update();
-        }
-        left.setPower(0);
-        right.setPower(0);
+        forward(-in);
     }
     private void pivotLeft(float degrees)
     {
         float arc = turnRadius * degrees;
         int pos = (int)((encoder * arc)/(4 * Math.PI));
+
         left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        left.setTargetPosition(-pos);
-        right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        left.setPower(-.5);
+        right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        left.setTargetPosition(pos);
+        right.setTargetPosition(-pos);
+        left.setPower(.5);
         right.setPower(.5);
-        while(left.isBusy()){
-            telemetry.addData("Motor Encoder", "Left: " + left.getCurrentPosition());
+        while(left.isBusy() && right.isBusy())
+        {
+            telemetry.addData("Motor Encoder", "Left Pos: " + left.getCurrentPosition());
+            telemetry.addLine();
+            telemetry.addData("Motor Encoder", "Right Pos: " + right.getCurrentPosition());
+            telemetry.addLine();
+            telemetry.addData("Power","Left Pow: " + left.getPower());
+            telemetry.addLine();
+            telemetry.addData("Power","Right Pow: " + right.getPower());
+            telemetry.addLine();
+            telemetry.addData("Target","Left Tar: " + left.getTargetPosition());
             telemetry.update();
         }
         left.setPower(0);
         right.setPower(0);
+        telemetry.update();
+        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
     private void pivotRight(float degrees)
     {
-        float arc = turnRadius * degrees;
-        int pos = (int)((encoder * arc)/(4 * Math.PI));
-        left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        left.setTargetPosition(-pos);
-        right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        left.setPower(.5);
-        right.setPower(-.5);
-        while(left.isBusy()){
-            telemetry.addData("Motor Encoder", "Left: " + left.getCurrentPosition());
-            telemetry.update();
-        }
-        left.setPower(0);
-        right.setPower(0);
+        pivotLeft(-degrees);
     }
     private void setPinch(boolean open)
     {
-        if(open == true)
+        if(open)
         {
             pincher.setDirection(DcMotorSimple.Direction.FORWARD);
         }
