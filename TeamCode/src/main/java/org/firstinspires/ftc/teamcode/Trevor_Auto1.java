@@ -88,6 +88,8 @@ public class Trevor_Auto1 extends LinearOpMode {
         pincher = hardwareMap.crservo.get("pincher");
         lift = hardwareMap.dcMotor.get("lift");
         right.setDirection(DcMotor.Direction.REVERSE);
+        pincher.setDirection(DcMotor.Direction.REVERSE);
+        lift.setDirection(DcMotor.Direction.REVERSE);
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -108,8 +110,54 @@ public class Trevor_Auto1 extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        forward(12);
-        backward(12);
+        //setPinch(true);
+        //setPinch(false);
+        raise();
+        lower();
+
+//        forward(22);
+//        pivotLeft(90);
+//        lower();
+//        forward(12);
+//        setPinch(false);
+//        backward(12);
+
+//        relicTrackables.activate();
+//        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+//        while(vuMark == RelicRecoveryVuMark.UNKNOWN)
+//        {
+//            vuMark = RelicRecoveryVuMark.from(relicTemplate);
+//        }
+//        if(vuMark == RelicRecoveryVuMark.LEFT){
+//            backward(20);
+//            pivotRight(90);
+//            forward(36);
+//            pivotLeft(90);
+//            forward(8);
+//            pivotRight(90);
+//            forward(17);
+//        }
+//        else if(vuMark == RelicRecoveryVuMark.CENTER){
+//            backward(20);
+//            pivotRight(90);
+//            forward(36);
+//            forward(17);
+//        }
+//        else if(vuMark == RelicRecoveryVuMark.RIGHT){
+//            backward(20);
+//            pivotRight(90);
+//            forward(36);
+//            pivotLeft(90);
+//            forward(8);
+//            pivotLeft(90);
+//            forward(17);
+//        }
+//        else{
+//            backward(20);
+//            pivotRight(90);
+//            forward(36);
+//            forward(17);
+//        }
     }
 
     /**
@@ -151,7 +199,7 @@ public class Trevor_Auto1 extends LinearOpMode {
     }
     private void pivotLeft(float degrees)
     {
-        float arc = turnRadius * degrees;
+        double arc = Math.PI * turnRadius * degrees / 360f;
         int pos = (int)((encoder * arc)/(4 * Math.PI));
 
         left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -187,13 +235,48 @@ public class Trevor_Auto1 extends LinearOpMode {
     {
         if(open)
         {
-            pincher.setDirection(DcMotorSimple.Direction.FORWARD);
+            pincher.setPower(0.5);
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {}
+            pincher.setPower(0);
         }
         else
         {
-            pincher.setDirection(DcMotorSimple.Direction.REVERSE);
+            pincher.setPower(-0.5);
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {}
+            pincher.setPower(0);
         }
     }
 
+    private void lower() {
+        lift.setPower(-0.1);
+        try {
+            for (int i = 0; i < 10; i++) {
+                telemetry.addData("Pos", lift.getCurrentPosition());
+                telemetry.update();
+                Thread.sleep(1000);
+            }
+        } catch (Exception e) {}
+        lift.setPower(0);
+        telemetry.addData("Pos", lift.getCurrentPosition());
+        telemetry.update();
+    }
+
+    private void raise() {
+        lift.setPower(0.3);
+        try {
+            for (int i = 0; i < 10; i++) {
+                telemetry.addData("Pos", lift.getCurrentPosition());
+                telemetry.update();
+                Thread.sleep(1000);
+            }
+        } catch (Exception e) {}
+        lift.setPower(0);
+        telemetry.addData("Pos", lift.getCurrentPosition());
+        telemetry.update();
+    }
 }
 
