@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -70,6 +71,7 @@ public class Trevor_Auto1 extends LinearOpMode {
     private DcMotor right = null;
     private DcMotor lift = null;
     private CRServo pincher = null;
+    private ColorSensor colorSensor = null;
     final private int encoder = 1120;
     final private float turnRadius =  16.9f;
 
@@ -84,9 +86,10 @@ public class Trevor_Auto1 extends LinearOpMode {
     public void runOpMode() {
 
         left = hardwareMap.get(DcMotor.class, "fL");
-        right = hardwareMap.get(DcMotor.class,  "fR");
+        right = hardwareMap.get(DcMotor.class, "fR");
         pincher = hardwareMap.crservo.get("pincher");
         lift = hardwareMap.dcMotor.get("lift");
+        colorSensor = hardwareMap.colorSensor.get("color");
         right.setDirection(DcMotor.Direction.REVERSE);
         pincher.setDirection(DcMotor.Direction.REVERSE);
         lift.setDirection(DcMotor.Direction.REVERSE);
@@ -112,9 +115,25 @@ public class Trevor_Auto1 extends LinearOpMode {
 
         //setPinch(true);
         //setPinch(false);
-        raise();
-        lower();
-
+        // until a color is detected
+        while (colorSensor.red() < 150 &&  colorSensor.blue() < 150) {
+            forward(0.1f);
+            telemetry.addData("Red", colorSensor.red());
+            telemetry.addData("Blue", colorSensor.blue());
+            telemetry.update();
+        }
+        if (colorSensor.red() > 150) {
+            // red
+            pivotRight(90);
+            telemetry.addData("Red", "True");
+            telemetry.update();
+        } else {
+            pivotLeft(90);
+            // blue
+            telemetry.addData("Red", "False");
+            telemetry.update();
+        }
+    }
 //        forward(22);
 //        pivotLeft(90);
 //        lower();
@@ -157,13 +176,7 @@ public class Trevor_Auto1 extends LinearOpMode {
 //            pivotRight(90);
 //            forward(36);
 //            forward(17);
-//        }
-    }
-
-    /**
-     * a complete failure
-     * @param in    a useless variable
-     */
+//
     private void forward(float in)
     {
         int pos = (int)((encoder * in)/(4 * Math.PI));
