@@ -96,13 +96,13 @@ public class Trevor_Auto1 extends LinearOpMode {
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        parameters.vuforiaLicenseKey = "AWrTLxn/////AAAAGR6wTueSh0e5nXohk/1mFhhxlpeNrb42FL6M45v6X/OY10YsoKBuWg631uY8mZL9E3eoZvRadFq+K8oQFzwhYrLl+KfifFyOf/FO357kuymZaqGdpjRFgURHPe6LnL+KJb8gpUD2UTJ/nvdHFsbUJwQg+5ldrY9oQRVQ4y3RFazGDV/c5ZNHJC2jGj0Nkd9sx+VQQ+xKhyTASCWwKIDO/XYytI/7b8t9Pg+Bjb+AawM58VHpzD7ZtiWVpWQBA5QTGhBRq1u2rncx4E8plAs7kY7odfQuYUncRPM+PiEJFHi2F1lHHGXoarkzHpVeFLwO9AdhkCjw7AjH1ClBYCcKhsG2DicEXlRV2BtEyfh6ZOhE";
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+//        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+//        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+//        parameters.vuforiaLicenseKey = "AWrTLxn/////AAAAGR6wTueSh0e5nXohk/1mFhhxlpeNrb42FL6M45v6X/OY10YsoKBuWg631uY8mZL9E3eoZvRadFq+K8oQFzwhYrLl+KfifFyOf/FO357kuymZaqGdpjRFgURHPe6LnL+KJb8gpUD2UTJ/nvdHFsbUJwQg+5ldrY9oQRVQ4y3RFazGDV/c5ZNHJC2jGj0Nkd9sx+VQQ+xKhyTASCWwKIDO/XYytI/7b8t9Pg+Bjb+AawM58VHpzD7ZtiWVpWQBA5QTGhBRq1u2rncx4E8plAs7kY7odfQuYUncRPM+PiEJFHi2F1lHHGXoarkzHpVeFLwO9AdhkCjw7AjH1ClBYCcKhsG2DicEXlRV2BtEyfh6ZOhE";
+//        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+//        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+//        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+//        VuforiaTrackable relicTemplate = relicTrackables.get(0);
 
 
         telemetry.addData("Status", "Initialized");
@@ -113,16 +113,15 @@ public class Trevor_Auto1 extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        //setPinch(true);
-        //setPinch(false);
+        colorSensor.enableLed(true);
         // until a color is detected
-        while (colorSensor.red() < 150 &&  colorSensor.blue() < 150) {
+        while (Math.abs(colorSensor.red() - colorSensor.blue()) < 100) {
             forward(0.1f);
             telemetry.addData("Red", colorSensor.red());
             telemetry.addData("Blue", colorSensor.blue());
             telemetry.update();
         }
-        if (colorSensor.red() > 150) {
+        if (colorSensor.red() > colorSensor.blue()) {
             // red
             pivotRight(90);
             telemetry.addData("Red", "True");
@@ -134,49 +133,7 @@ public class Trevor_Auto1 extends LinearOpMode {
             telemetry.update();
         }
     }
-//        forward(22);
-//        pivotLeft(90);
-//        lower();
-//        forward(12);
-//        setPinch(false);
-//        backward(12);
 
-//        relicTrackables.activate();
-//        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-//        while(vuMark == RelicRecoveryVuMark.UNKNOWN)
-//        {
-//            vuMark = RelicRecoveryVuMark.from(relicTemplate);
-//        }
-//        if(vuMark == RelicRecoveryVuMark.LEFT){
-//            backward(20);
-//            pivotRight(90);
-//            forward(36);
-//            pivotLeft(90);
-//            forward(8);
-//            pivotRight(90);
-//            forward(17);
-//        }
-//        else if(vuMark == RelicRecoveryVuMark.CENTER){
-//            backward(20);
-//            pivotRight(90);
-//            forward(36);
-//            forward(17);
-//        }
-//        else if(vuMark == RelicRecoveryVuMark.RIGHT){
-//            backward(20);
-//            pivotRight(90);
-//            forward(36);
-//            pivotLeft(90);
-//            forward(8);
-//            pivotLeft(90);
-//            forward(17);
-//        }
-//        else{
-//            backward(20);
-//            pivotRight(90);
-//            forward(36);
-//            forward(17);
-//
     private void forward(float in)
     {
         int pos = (int)((encoder * in)/(4 * Math.PI));
