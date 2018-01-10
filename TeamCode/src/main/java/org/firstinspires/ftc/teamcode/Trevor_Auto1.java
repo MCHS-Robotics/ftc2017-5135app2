@@ -91,7 +91,7 @@ public class Trevor_Auto1 extends LinearOpMode {
         right = hardwareMap.get(DcMotor.class, "fR");
         pincher = hardwareMap.crservo.get("pincher");
         lift = hardwareMap.dcMotor.get("lift");
-        jewel = hardwareMap.servo.get("jewel");
+        //jewel = hardwareMap.servo.get("jewel");
         colorSensor = hardwareMap.colorSensor.get("color");
         right.setDirection(DcMotor.Direction.REVERSE);
         pincher.setDirection(DcMotor.Direction.REVERSE);
@@ -118,7 +118,7 @@ public class Trevor_Auto1 extends LinearOpMode {
 
         colorSensor.enableLed(true);
         // until a color is detected
-        while (Math.abs(colorSensor.red() - colorSensor.blue()) < 100) {
+        while (Math.abs(colorSensor.red() - colorSensor.blue()) < 25) {
             //forward(0.1f);
             telemetry.addData("Red", colorSensor.red());
             telemetry.addData("Blue", colorSensor.blue());
@@ -135,6 +135,7 @@ public class Trevor_Auto1 extends LinearOpMode {
             telemetry.addData("Blue", "True");
             telemetry.update();
         }
+        colorSensor.enableLed(false);
     }
 
     private void forward(float in)
