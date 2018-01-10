@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -71,6 +72,7 @@ public class Trevor_Auto1 extends LinearOpMode {
     private DcMotor right = null;
     private DcMotor lift = null;
     private CRServo pincher = null;
+    private Servo jewel = null;
     private ColorSensor colorSensor = null;
     final private int encoder = 1120;
     final private float turnRadius =  16.9f;
@@ -89,6 +91,7 @@ public class Trevor_Auto1 extends LinearOpMode {
         right = hardwareMap.get(DcMotor.class, "fR");
         pincher = hardwareMap.crservo.get("pincher");
         lift = hardwareMap.dcMotor.get("lift");
+        jewel = hardwareMap.servo.get("jewel");
         colorSensor = hardwareMap.colorSensor.get("color");
         right.setDirection(DcMotor.Direction.REVERSE);
         pincher.setDirection(DcMotor.Direction.REVERSE);
@@ -116,20 +119,20 @@ public class Trevor_Auto1 extends LinearOpMode {
         colorSensor.enableLed(true);
         // until a color is detected
         while (Math.abs(colorSensor.red() - colorSensor.blue()) < 100) {
-            forward(0.1f);
+            //forward(0.1f);
             telemetry.addData("Red", colorSensor.red());
             telemetry.addData("Blue", colorSensor.blue());
             telemetry.update();
         }
         if (colorSensor.red() > colorSensor.blue()) {
             // red
-            pivotRight(90);
+            //pivotRight(90);
             telemetry.addData("Red", "True");
             telemetry.update();
         } else {
-            pivotLeft(90);
+            //pivotLeft(90);
             // blue
-            telemetry.addData("Red", "False");
+            telemetry.addData("Blue", "True");
             telemetry.update();
         }
     }
