@@ -30,23 +30,15 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
 /**
@@ -62,9 +54,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Trevor_Auto1_BLUE", group="Linear Opmode")
+@Autonomous(name="Trevor_Auto1_RED", group="Linear Opmode")
 
-public class Trevor_Auto1 extends LinearOpMode {
+public class Trevor_Auto1_RED extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -121,7 +113,7 @@ public class Trevor_Auto1 extends LinearOpMode {
         colorSensor.enableLed(true);
         // until a color is detected
         while (Math.abs(colorSensor.red() - colorSensor.blue()) < 25) {
-            backward(0.5f);
+            backward(1.25f);
             telemetry.addData("Red", colorSensor.red());
             telemetry.addData("Blue", colorSensor.blue());
             telemetry.update();
@@ -129,11 +121,11 @@ public class Trevor_Auto1 extends LinearOpMode {
         // Only works on one side (blue?)
         if (colorSensor.red() > colorSensor.blue()) {
             // red
-            pivotLeft(90);
+            pivotRight(90);
             telemetry.addData("Red", "True");
             telemetry.update();
         } else {
-            pivotRight(90);
+            pivotLeft(90);
             // blue
             telemetry.addData("Blue", "True");
             telemetry.update();
