@@ -30,15 +30,23 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
 /**
@@ -66,8 +74,8 @@ public class Trevor_Auto1_RED extends LinearOpMode {
     private CRServo pincher = null;
     private Servo jewel = null;
     private ColorSensor colorSensor = null;
-    final private int encoder = 1120;
-    final private float turnRadius =  16.9f;
+
+    private MovementStrategy move;
 
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -91,6 +99,10 @@ public class Trevor_Auto1_RED extends LinearOpMode {
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        move = new NormalDriveEncoders(right, left, telemetry);
 //        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 //        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 //        parameters.vuforiaLicenseKey = "AWrTLxn/////AAAAGR6wTueSh0e5nXohk/1mFhhxlpeNrb42FL6M45v6X/OY10YsoKBuWg631uY8mZL9E3eoZvRadFq+K8oQFzwhYrLl+KfifFyOf/FO357kuymZaqGdpjRFgURHPe6LnL+KJb8gpUD2UTJ/nvdHFsbUJwQg+5ldrY9oQRVQ4y3RFazGDV/c5ZNHJC2jGj0Nkd9sx+VQQ+xKhyTASCWwKIDO/XYytI/7b8t9Pg+Bjb+AawM58VHpzD7ZtiWVpWQBA5QTGhBRq1u2rncx4E8plAs7kY7odfQuYUncRPM+PiEJFHi2F1lHHGXoarkzHpVeFLwO9AdhkCjw7AjH1ClBYCcKhsG2DicEXlRV2BtEyfh6ZOhE";
@@ -107,103 +119,42 @@ public class Trevor_Auto1_RED extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+        //raise();
         jewel.setPosition(0.55);
+        sleep(250);
         telemetry.addData("Position", jewel.getPosition());
 
         colorSensor.enableLed(true);
         // until a color is detected
         while (Math.abs(colorSensor.red() - colorSensor.blue()) < 25) {
-            backward(1.25f);
+            move.backward(1.25f);
             telemetry.addData("Red", colorSensor.red());
             telemetry.addData("Blue", colorSensor.blue());
             telemetry.update();
         }
-        // Only works on one side (blue?)
+        // Only works on one side (blue)
         if (colorSensor.red() > colorSensor.blue()) {
             // red
-            pivotRight(90);
+            move.pivotLeft(180);
             telemetry.addData("Red", "True");
             telemetry.update();
         } else {
-            pivotLeft(90);
+            move.pivotRight(180);
             // blue
             telemetry.addData("Blue", "True");
             telemetry.update();
         }
         colorSensor.enableLed(false);
         jewel.setPosition(0);
-        try {
-            Thread.sleep(1000);
-        } catch(Exception e) {}
+
+        move.backward(6);
+        move.pivotRight(90);
+        move.forward(36);
+        //move.pivotLeft(90);
+        //lower();
+        //setPinch(false);
     }
 
-    private void forward(float in)
-    {
-        int pos = (int)((encoder * in)/(4 * Math.PI));
-
-        left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        left.setTargetPosition(pos);
-        right.setTargetPosition(pos);
-        left.setPower(.5);
-        right.setPower(.5);
-        while(left.isBusy() && right.isBusy())
-        {
-            telemetry.addData("Motor Encoder", "Left Pos: " + left.getCurrentPosition());
-            telemetry.addLine();
-            telemetry.addData("Motor Encoder", "Right Pos: " + right.getCurrentPosition());
-            telemetry.addLine();
-            telemetry.addData("Power","Left Pow: " + left.getPower());
-            telemetry.addLine();
-            telemetry.addData("Power","Right Pow: " + right.getPower());
-            telemetry.addLine();
-            telemetry.addData("Target","Left Tar: " + left.getTargetPosition());
-            telemetry.update();
-        }
-        left.setPower(0);
-        right.setPower(0);
-        telemetry.update();
-        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
-    private void backward(float in)
-    {
-        forward(-in);
-    }
-    private void pivotLeft(float degrees)
-    {
-        double arc = Math.PI * turnRadius * degrees / 360f;
-        int pos = (int)((encoder * arc)/(4 * Math.PI));
-
-        left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        left.setTargetPosition(pos);
-        right.setTargetPosition(-pos);
-        left.setPower(.5);
-        right.setPower(.5);
-        while(left.isBusy() && right.isBusy())
-        {
-            telemetry.addData("Motor Encoder", "Left Pos: " + left.getCurrentPosition());
-            telemetry.addLine();
-            telemetry.addData("Motor Encoder", "Right Pos: " + right.getCurrentPosition());
-            telemetry.addLine();
-            telemetry.addData("Power","Left Pow: " + left.getPower());
-            telemetry.addLine();
-            telemetry.addData("Power","Right Pow: " + right.getPower());
-            telemetry.addLine();
-            telemetry.addData("Target","Left Tar: " + left.getTargetPosition());
-            telemetry.update();
-        }
-        left.setPower(0);
-        right.setPower(0);
-        telemetry.update();
-        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
-    private void pivotRight(float degrees)
-    {
-        pivotLeft(-degrees);
-    }
     private void setPinch(boolean open)
     {
         if(open)
@@ -224,7 +175,8 @@ public class Trevor_Auto1_RED extends LinearOpMode {
         }
     }
 
-    private void lower() {
+    private void lower()
+    {
         lift.setPower(-0.1);
         try {
             for (int i = 0; i < 10; i++) {
@@ -238,7 +190,8 @@ public class Trevor_Auto1_RED extends LinearOpMode {
         telemetry.update();
     }
 
-    private void raise() {
+    private void raise()
+    {
         lift.setPower(0.3);
         try {
             for (int i = 0; i < 10; i++) {

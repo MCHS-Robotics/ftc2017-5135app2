@@ -19,6 +19,7 @@ public class NormalDriveEncoders implements MovementStrategy {
     public NormalDriveEncoders(DcMotor left, DcMotor right, Telemetry telemetry) {
         this.left = left;
         this.right = right;
+        this.telemetry = telemetry;
     }
 
     public void forward(float in) {

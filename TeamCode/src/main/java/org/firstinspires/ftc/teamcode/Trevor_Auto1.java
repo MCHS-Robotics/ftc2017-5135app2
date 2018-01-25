@@ -108,6 +108,8 @@ public class Trevor_Auto1 extends LinearOpMode {
 //        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
 //        VuforiaTrackable relicTemplate = relicTrackables.get(0);
 
+        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -116,26 +118,27 @@ public class Trevor_Auto1 extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-        raise();
+        //raise();
         jewel.setPosition(0.55);
+        sleep(250);
         telemetry.addData("Position", jewel.getPosition());
 
         colorSensor.enableLed(true);
         // until a color is detected
         while (Math.abs(colorSensor.red() - colorSensor.blue()) < 25) {
-            move.backward(0.5f);
+            move.backward(1.25f);
             telemetry.addData("Red", colorSensor.red());
             telemetry.addData("Blue", colorSensor.blue());
             telemetry.update();
         }
-        // Only works on one side (blue?)
+        // Only works on one side (blue)
         if (colorSensor.red() > colorSensor.blue()) {
             // red
-            move.pivotLeft(180);
+            move.pivotRight(180);
             telemetry.addData("Red", "True");
             telemetry.update();
         } else {
-            move.pivotRight(180);
+            move.pivotLeft(180);
             // blue
             telemetry.addData("Blue", "True");
             telemetry.update();
@@ -143,12 +146,12 @@ public class Trevor_Auto1 extends LinearOpMode {
         colorSensor.enableLed(false);
         jewel.setPosition(0);
 
-        move.backward(12);
-        move.pivotRight(90);
-        move.forward(24);
+        move.backward(6);
         move.pivotLeft(90);
-        lower();
-        setPinch(false);
+        move.forward(36);
+        //move.pivotLeft(90);
+        //lower();
+        //setPinch(false);
     }
 
     private void setPinch(boolean open)
@@ -171,7 +174,8 @@ public class Trevor_Auto1 extends LinearOpMode {
         }
     }
 
-    private void lower() {
+    private void lower()
+    {
         lift.setPower(-0.1);
         try {
             for (int i = 0; i < 10; i++) {
@@ -185,7 +189,8 @@ public class Trevor_Auto1 extends LinearOpMode {
         telemetry.update();
     }
 
-    private void raise() {
+    private void raise()
+    {
         lift.setPower(0.3);
         try {
             for (int i = 0; i < 10; i++) {

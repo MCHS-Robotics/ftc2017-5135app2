@@ -32,6 +32,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -49,7 +50,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Noah_TeleOpV2**USE**", group="Iterative Opmode")
+@TeleOp(name="Noah_TeleOpV2", group="Iterative Opmode")
 //@Disabled
 public class Noah_TeleOp2 extends OpMode
 {
@@ -59,6 +60,7 @@ public class Noah_TeleOp2 extends OpMode
     private DcMotor frontright = null;
     private DcMotor lift = null;
     private CRServo pincher = null;
+    private Servo jewel = null;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -72,6 +74,7 @@ public class Noah_TeleOp2 extends OpMode
         // step (using the FTC Robot Controller app on the phone).
         frontleft  = hardwareMap.get(DcMotor.class, "fL");
         frontright = hardwareMap.get(DcMotor.class, "fR");
+        jewel = hardwareMap.servo.get("jewel");
         frontleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         pincher = hardwareMap.crservo.get("pincher");
@@ -119,23 +122,38 @@ public class Noah_TeleOp2 extends OpMode
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = -gamepad1.left_stick_y;
+        double drive = gamepad1.left_stick_y;
         double turn  =  gamepad1.right_stick_x;
         frontleft.setPower(Range.clip(drive + turn, -1.0, 1.0));
         frontright.setPower(Range.clip(drive - turn, -1.0, 1.0));
         if(gamepad2.x)
         {
-            pincher.setPower(-0.25);
+            pincher.setPower(-1);
         }
         else if(gamepad2.b)
         {
-            pincher.setPower(0.25);
+            pincher.setPower(1);
+        }
+        else if (gamepad2.right_bumper)
+        {
+            pincher.setPower(0.15);
+        }
+        else if (gamepad2.left_bumper)
+        {
+            pincher.setPower(-0.15);
         }
         else
         {
             pincher.setPower(0);
         }
-
+        if (gamepad1.dpad_up)
+        {
+            jewel.setPosition(0);
+        }
+        else if (gamepad1.dpad_down)
+        {
+            jewel.setPosition(0.65);
+        }
         if(gamepad2.dpad_up)
         {
             lift.setPower(-0.5);
