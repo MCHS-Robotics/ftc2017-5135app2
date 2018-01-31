@@ -99,8 +99,8 @@ public class Trevor_Auto1_RED extends LinearOpMode {
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+       // left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+       // right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         move = new NormalDriveEncoders(right, left, telemetry);
 //        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -123,36 +123,46 @@ public class Trevor_Auto1_RED extends LinearOpMode {
         jewel.setPosition(0.55);
         sleep(250);
         telemetry.addData("Position", jewel.getPosition());
-
+        right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        left.setPower(-0.15);
+        right.setPower(-0.15);
         colorSensor.enableLed(true);
         // until a color is detected
-        while (Math.abs(colorSensor.red() - colorSensor.blue()) < 25) {
-            move.backward(1.25f);
+        while (Math.abs(colorSensor.red() - colorSensor.blue()) < 15 && !isStopRequested()) {
+            //move.backward(1.25f);
             telemetry.addData("Red", colorSensor.red());
             telemetry.addData("Blue", colorSensor.blue());
             telemetry.update();
         }
-        // Only works on one side (blue)
-        if (colorSensor.red() > colorSensor.blue()) {
-            // red
-            move.pivotLeft(180);
-            telemetry.addData("Red", "True");
-            telemetry.update();
-        } else {
-            move.pivotRight(180);
-            // blue
-            telemetry.addData("Blue", "True");
-            telemetry.update();
-        }
-        colorSensor.enableLed(false);
-        jewel.setPosition(0);
+        right.setPower(0);
+        left.setPower(0);
 
-        move.backward(6);
-        move.pivotRight(90);
-        move.forward(36);
-        //move.pivotLeft(90);
-        //lower();
-        //setPinch(false);
+        if (!isStopRequested()) {
+            // Only works on one side (blue)
+            if (colorSensor.red() > colorSensor.blue()) {
+                // red
+                move.pivotLeft(180);
+                telemetry.addData("Red", "True");
+                telemetry.update();
+            } else {
+                move.pivotRight(180);
+                // blue
+                telemetry.addData("Blue", "True");
+                telemetry.update();
+            }
+
+            colorSensor.enableLed(false);
+            jewel.setPosition(0);
+            sleep(500);
+/*
+            move.backward(6);
+            move.pivotRight(90);
+            move.forward(36);
+            //move.pivotLeft(90);
+            //lower();
+            //setPinch(false);
+        }*/}
     }
 
     private void setPinch(boolean open)

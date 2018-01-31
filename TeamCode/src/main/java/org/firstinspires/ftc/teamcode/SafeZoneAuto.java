@@ -62,9 +62,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Trevor_Auto1_BLUE", group="Linear Opmode")
+@Autonomous(name="Safe_Zone_Auto", group="Linear Opmode")
 
-public class Trevor_Auto1 extends LinearOpMode {
+public class SafeZoneAuto extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -119,49 +119,13 @@ public class Trevor_Auto1 extends LinearOpMode {
         waitForStart();
         runtime.reset();
         //raise();
-        jewel.setPosition(0.55);
-        sleep(250);
-        left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        telemetry.addData("Position", jewel.getPosition());
-        left.setPower(-0.15);
-        right.setPower(-0.15);
-        colorSensor.enableLed(true);
-        // until a color is detected
-        while (Math.abs(colorSensor.red() - colorSensor.blue()) < 15 && !isStopRequested()) {
-            //move.backward(1.25f);
-            telemetry.addData("Red", colorSensor.red());
-            telemetry.addData("Blue", colorSensor.blue());
-            telemetry.update();
-        }
-
-        left.setPower(0);
+        right.setPower(0.25);
+        left.setPower(0.25);
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {}
         right.setPower(0);
-        if (!isStopRequested()) {
-            // Only works on one side (blue)
-            if (colorSensor.red() > colorSensor.blue()) {
-                // red
-                move.pivotRight(180);
-                telemetry.addData("Red", "True");
-                telemetry.update();
-            } else {
-                move.pivotLeft(180);
-                // blue
-                telemetry.addData("Blue", "True");
-                telemetry.update();
-            }
-            colorSensor.enableLed(false);
-            jewel.setPosition(0);
-            sleep(500);
-    /*
-            move.backward(6);
-            move.pivotLeft(90);
-            move.forward(36);
-            //move.pivotLeft(90);
-            //lower();
-            //setPinch(false);
-        }
-        */}
+        left.setPower(0);
     }
 
     private void setPinch(boolean open)
