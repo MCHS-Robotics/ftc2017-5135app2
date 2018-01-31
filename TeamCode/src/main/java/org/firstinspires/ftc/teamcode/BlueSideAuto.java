@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 @Autonomous(name="Auto_Blue", group="Linear Opmode")
 public class BlueSideAuto extends GeneralAuto {
 
+    @Override
     protected void knockOffJewel(boolean red) {
         if (red) {
             move.pivotRight(180);
@@ -17,4 +18,10 @@ public class BlueSideAuto extends GeneralAuto {
         }
     }
 
+    @Override
+    protected void scoreGlyphAndPark() {
+        move.backward(6);
+        move.pivotLeft(90);
+        move.forward(36);
+    }
 }

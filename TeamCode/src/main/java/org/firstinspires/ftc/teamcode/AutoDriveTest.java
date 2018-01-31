@@ -92,19 +92,33 @@ public abstract class AutoDriveTest extends LinearOpMode {
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        // ----------------------------------------------- CHANGE THIS TO TEST DIFFERENT DRIVE
-
-        move = new NormalDriveIMU(right, left, telemetry, 0.15f, hardwareMap);
-
-        // -----------------------------------------------
-
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
-
+        move = new NormalDriveEncoders(right, left, telemetry, 0.15f);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+
+        telemetry.addData("Testing:", "Encoders");
+        telemetry.update();
+
+        move.forward(12);
+        move.pivotRight(90);
+        move.backward(12);
+        move.pivotRight(90);
+        move.forward(12);
+        move.pivotRight(90);
+        move.backward(12);
+        move.pivotRight(90);
+
+        move.pivotRight(45);
+        move.forward(6);
+        move.backward(6);
+        move.pivotLeft(45);
+
+        move = new NormalDriveIMU(right, left, telemetry, 0.15f, hardwareMap);
+
+        telemetry.addData("Testing:", "IMU");
+        telemetry.update();
 
         move.forward(12);
         move.pivotRight(90);
