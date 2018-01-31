@@ -1,4 +1,21 @@
-/* Copyright (c) 2017 FIRST. All rights reserved.
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+
+/**
+ * Created by student on 1/30/18.
+ */
+
+    /* Copyright (c) 2017 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted (subject to the limitations in the disclaimer below) provided that
@@ -27,44 +44,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+    /**
+     * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
+     * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
+     * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
+     * class is instantiated on the Robot Controller and executed.
+     *
+     * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
+     * It includes all the skeletal structure that all linear OpModes contain.
+     *
+     * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
+     * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+     */
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-
-
-/**
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
- * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
- * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
- *
- * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all linear OpModes contain.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
-
-@Autonomous(name="Trevor_Auto1_BLUE", group="Linear Opmode")
-@Disabled
-public class Trevor_Auto1 extends LinearOpMode {
+public abstract class GeneralAuto extends LinearOpMode {
 
     // Declare OpMode members.
     protected ElapsedTime runtime = new ElapsedTime();
@@ -74,8 +67,9 @@ public class Trevor_Auto1 extends LinearOpMode {
     protected CRServo pincher = null;
     protected Servo jewel = null;
     protected ColorSensor colorSensor = null;
-
     protected MovementStrategy move;
+
+    public static final float power = 0.15f;
 
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -99,7 +93,10 @@ public class Trevor_Auto1 extends LinearOpMode {
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        move = new NormalDriveEncoders(right, left, telemetry, 0.15f);
+
+        move = new NormalDriveTime(right, left, telemetry, power);
+
+
 //        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 //        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 //        parameters.vuforiaLicenseKey = "AWrTLxn/////AAAAGR6wTueSh0e5nXohk/1mFhhxlpeNrb42FL6M45v6X/OY10YsoKBuWg631uY8mZL9E3eoZvRadFq+K8oQFzwhYrLl+KfifFyOf/FO357kuymZaqGdpjRFgURHPe6LnL+KJb8gpUD2UTJ/nvdHFsbUJwQg+5ldrY9oQRVQ4y3RFazGDV/c5ZNHJC2jGj0Nkd9sx+VQQ+xKhyTASCWwKIDO/XYytI/7b8t9Pg+Bjb+AawM58VHpzD7ZtiWVpWQBA5QTGhBRq1u2rncx4E8plAs7kY7odfQuYUncRPM+PiEJFHi2F1lHHGXoarkzHpVeFLwO9AdhkCjw7AjH1ClBYCcKhsG2DicEXlRV2BtEyfh6ZOhE";
@@ -107,9 +104,6 @@ public class Trevor_Auto1 extends LinearOpMode {
 //        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 //        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
 //        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-
-        //left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -124,12 +118,11 @@ public class Trevor_Auto1 extends LinearOpMode {
         left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         telemetry.addData("Position", jewel.getPosition());
-        left.setPower(-0.15);
-        right.setPower(-0.15);
+        left.setPower(-power);
+        right.setPower(-power);
         colorSensor.enableLed(true);
-        // until a color is detected
-        while (Math.abs(colorSensor.red() - colorSensor.blue()) < 25 && !isStopRequested()) {
-            //move.backward(1.25f);
+        // until a color is detected or 2 seconds have elapsed
+        while (runtime.milliseconds() < 2000 && Math.abs(colorSensor.red() - colorSensor.blue()) < 25 && !isStopRequested()) {
             telemetry.addData("Red", colorSensor.red());
             telemetry.addData("Blue", colorSensor.blue());
             telemetry.update();
@@ -138,31 +131,23 @@ public class Trevor_Auto1 extends LinearOpMode {
         left.setPower(0);
         right.setPower(0);
         if (!isStopRequested()) {
-            // Only works on one side (blue)
-            if (colorSensor.red() > colorSensor.blue()) {
-                // red
-                move.pivotRight(180);
-                telemetry.addData("Red", "True");
-                telemetry.update();
-            } else {
-                move.pivotLeft(180);
-                // blue
-                telemetry.addData("Blue", "True");
-                telemetry.update();
-            }
-            colorSensor.enableLed(false);
-            jewel.setPosition(0);
-            sleep(500);
-    /*
-            move.backward(6);
-            move.pivotLeft(90);
-            move.forward(36);
-            //move.pivotLeft(90);
-            //lower();
-            //setPinch(false);
+            left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            // knocks off jewel if detected
+            if (Math.abs(colorSensor.red() - colorSensor.blue()) >= 20)
+                knockOffJewel(colorSensor.red() > colorSensor.blue());
         }
-        */}
+        /*
+        move.backward(6);
+        move.pivotLeft(90);
+        move.forward(36);
+        */
+        //move.pivotLeft(90);
+        //lower();
+        //setPinch(false);
     }
+
+    protected abstract void knockOffJewel(boolean red);
 
     protected void setPinch(boolean open)
     {

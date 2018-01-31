@@ -15,8 +15,9 @@ public class NormalDriveEncoders implements MovementStrategy {
 
     private DcMotor left, right;
     private Telemetry telemetry;
-
-    public NormalDriveEncoders(DcMotor left, DcMotor right, Telemetry telemetry) {
+    float power;
+    
+    public NormalDriveEncoders(DcMotor left, DcMotor right, Telemetry telemetry, float power) {
         this.left = left;
         this.right = right;
         this.telemetry = telemetry;
@@ -30,13 +31,9 @@ public class NormalDriveEncoders implements MovementStrategy {
         left.setTargetPosition(pos);
         right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         right.setTargetPosition(pos);
-        right.setPower(.15);
-        left.setPower(.15);
-//        if (pos > 0)
-//            right.setPower(.15);
-//        else
-//            right.setPower(-.15);
-        while(left.isBusy() /*&&right.isBusy()*/)
+        right.setPower(power);
+        left.setPower(power);
+        while(left.isBusy() &&right.isBusy())
         {
             telemetry.addData("Motor Encoder", "Left Pos: " + left.getCurrentPosition());
             telemetry.addLine();
@@ -62,17 +59,6 @@ public class NormalDriveEncoders implements MovementStrategy {
     public void pivotLeft(float degrees)
 
     {
-
-        left.setPower(.15);
-        right.setPower(-.15);
-        try {
-            Thread.sleep(1500);
-        } catch (Exception e) {
-
-        }
-        left.setPower(0);
-        right.setPower(0);
-         /*
         double arc = Math.PI * turnRadius * degrees / 360f;
         int pos = (int)((encoder * arc)/(4 * Math.PI));
 
@@ -80,14 +66,9 @@ public class NormalDriveEncoders implements MovementStrategy {
         right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         left.setTargetPosition(pos);
         right.setTargetPosition(-pos);
-        left.setPower(.15);
-        right.setPower(.15);
-//        if (pos < 0)
-//            right.setPower(.15);
-//        else
-//            right.setPower(-.15);
-        while(left.isBusy()/* && right.isBusy()*///)
-         /*
+        left.setPower(power);
+        right.setPower(power);
+        while(left.isBusy() && right.isBusy())
         {
             telemetry.addData("Motor Encoder", "Left Pos: " + left.getCurrentPosition());
             telemetry.addLine();
@@ -104,22 +85,10 @@ public class NormalDriveEncoders implements MovementStrategy {
         right.setPower(0);
         left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        */
     }
     public void pivotRight(float degrees)
     {
-
-        left.setPower(-.15);
-        right.setPower(.15);
-        try {
-            Thread.sleep(1500);
-        } catch (Exception e) {
-
-        }
-        right.setPower(0);
-        left.setPower(0);
-
-       // pivotLeft(-degrees);
+       pivotLeft(-degrees);
     }
 
 }

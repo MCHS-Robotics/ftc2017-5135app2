@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Noah_TeleOpV1", group="Iterative Opmode")
-//@Disabled
+@Disabled
 public class Noah_TeleOp1 extends OpMode
 {
     // Declare OpMode members.

@@ -52,6 +52,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Servo Test1", group="Testing")
+@Disabled
 public class BrandonLuu_BasicOpMode_Linear extends LinearOpMode {
     /**
      * // Declare OpMode members.
@@ -75,11 +76,44 @@ public class BrandonLuu_BasicOpMode_Linear extends LinearOpMode {
      * sleep(1000);
      * }
      */
+
+
+
+
+
+
 // Declare OpMode members.
+            /*
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
 
+    @Override
+    public void runOpMode() {
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+        // Initialize the hardware variables. Note that the strings used here as parameters
+        // to 'get' must correspond to the names assigned during the robot configuration
+        // step (using the FTC Robot Controller app on the phone).
+        leftDrive  = hardwareMap.get(DcMotor.class, "fL");
+        rightDrive = hardwareMap.get(DcMotor.class, "fR");
+        leftDrive.setTargetPosition(360);
+        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDrive.setTargetPosition(-360);
+        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        waitForStart();
+        runtime.reset();
+
+        leftDrive.setPower(.5);
+        rightDrive.setPower(.5);
+        sleep(1000);
+    }
+    */
+    private ElapsedTime runtime = new ElapsedTime();
+    private DcMotor leftDrive = null;
+    private DcMotor rightDrive = null;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");

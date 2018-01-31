@@ -1,4 +1,21 @@
-/* Copyright (c) 2017 FIRST. All rights reserved.
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+
+/**
+ * Created by student on 1/30/18.
+ */
+
+    /* Copyright (c) 2017 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted (subject to the limitations in the disclaimer below) provided that
@@ -27,17 +44,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-
-
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
@@ -50,45 +56,70 @@ import com.qualcomm.robotcore.util.Range;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-
-@TeleOp(name="Test Clamp", group="Linear Opmode")
-@Disabled
-public class Cole_ClampTest extends LinearOpMode {
+@Autonomous(name="Auto_Drive_Test", group="Linear Opmode")
+public abstract class AutoDriveTest extends LinearOpMode {
 
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private Servo left = null;
-    private Servo right = null;
+    protected ElapsedTime runtime = new ElapsedTime();
+    protected DcMotor left = null;
+    protected DcMotor right = null;
+    protected DcMotor lift = null;
+    protected CRServo pincher = null;
+    protected Servo jewel = null;
+    protected ColorSensor colorSensor = null;
+
+    protected MovementStrategy move;
+
+    public static final String TAG = "Vuforia VuMark Sample";
+
+    OpenGLMatrix lastLocation = null;
+
+    VuforiaLocalizer vuforia;
+
 
     @Override
     public void runOpMode() {
+
+        left = hardwareMap.get(DcMotor.class, "fL");
+        right = hardwareMap.get(DcMotor.class, "fR");
+        pincher = hardwareMap.crservo.get("pincher");
+        lift = hardwareMap.dcMotor.get("lift");
+        jewel = hardwareMap.servo.get("jewel");
+        colorSensor = hardwareMap.colorSensor.get("color");
+        right.setDirection(DcMotor.Direction.REVERSE);
+        pincher.setDirection(DcMotor.Direction.REVERSE);
+        lift.setDirection(DcMotor.Direction.REVERSE);
+        left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        // ----------------------------------------------- CHANGE THIS TO TEST DIFFERENT DRIVE
+
+        move = new NormalDriveIMU(right, left, telemetry, 0.15f, hardwareMap);
+
+        // -----------------------------------------------
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-        left  = hardwareMap.servo.get("left_clamp");//hardwareMap.get(DcMotor.class, "left_drive");
-        right = hardwareMap.servo.get("right_clamp");//hardwareMap.get(DcMotor.class, "right_drive");
-
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-        left.setDirection(Servo.Direction.FORWARD);
-        right.setDirection(Servo.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+        move.forward(12);
+        move.pivotRight(90);
+        move.backward(12);
+        move.pivotRight(90);
+        move.forward(12);
+        move.pivotRight(90);
+        move.backward(12);
+        move.pivotRight(90);
 
-            left.setPosition(0);
-            right.setPosition(0);
-
-            telemetry.addData("Positoion", 0);
-            telemetry.update();
-
-        }
+        move.pivotRight(45);
+        move.forward(6);
+        move.backward(6);
+        move.pivotLeft(45);
     }
+
 }
+
