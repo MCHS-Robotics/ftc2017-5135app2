@@ -100,12 +100,12 @@ public abstract class AutoDriveTest extends LinearOpMode {
 
         telemetry.addData("Testing:", "Encoders");
         telemetry.update();
-
+        /*
         move.forward(12);
         move.pivotRight(90);
         move.backward(12);
         move.pivotRight(90);
-        move.forward(12);
+        move.forward(6);
         move.pivotRight(90);
         move.backward(12);
         move.pivotRight(90);
@@ -114,7 +114,7 @@ public abstract class AutoDriveTest extends LinearOpMode {
         move.forward(6);
         move.backward(6);
         move.pivotLeft(45);
-
+        */
         move = new NormalDriveIMU(right, left, telemetry, 0.15f, hardwareMap);
 
         telemetry.addData("Testing:", "IMU");
@@ -124,7 +124,7 @@ public abstract class AutoDriveTest extends LinearOpMode {
         move.pivotRight(90);
         move.backward(12);
         move.pivotRight(90);
-        move.forward(12);
+        move.forward(6);
         move.pivotRight(90);
         move.backward(12);
         move.pivotRight(90);
