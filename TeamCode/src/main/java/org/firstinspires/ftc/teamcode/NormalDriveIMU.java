@@ -71,14 +71,14 @@ public class NormalDriveIMU implements MovementStrategy {
 
     private void update() {
         // update IMU values
-        pos = imu.getPosition();
-        vel = imu.getVelocity();
+        //pos = imu.getPosition();
+        //vel = imu.getVelocity();
         grav = imu.getGravity();
-        accel = imu.getLinearAcceleration();
-        anet = imu.getOverallAcceleration();
+        //accel = imu.getLinearAcceleration();
+        //anet = imu.getOverallAcceleration();
 
         angOrien = imu.getAngularOrientation();
-        L = imu.getAngularVelocity();
+        //L = imu.getAngularVelocity();
         /*
         telemetry.addLine("Position: ");
         telemetry.addData("x: ", pos.x);
