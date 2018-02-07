@@ -56,7 +56,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@Autonomous(name="Auto_Drive_Test", group="Linear Opmode")
+@Teleop(name="Auto_Drive_Test", group="Linear Opmode")
 public class AutoDriveTest extends LinearOpMode {
 
     // Declare OpMode members.
@@ -92,51 +92,27 @@ public class AutoDriveTest extends LinearOpMode {
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        //move = new NormalDriveEncoders(right, left, telemetry, 0.15f);
-
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-
-        //telemetry.addData("Testing:", "Encoders");
-        //telemetry.update();
-        /*
-        move.forward(12);
-        move.pivotRight(90);
-        move.backward(12);
-        move.pivotRight(90);
-        move.forward(12);
-        move.pivotRight(90);
-        move.backward(12);
-        move.pivotRight(90);
-
-        move.pivotRight(45);
-        move.forward(6);
-        move.backward(6);
-        move.pivotLeft(45);
-        */
         move = new NormalDriveIMU(right, left, telemetry, 0.2f, hardwareMap);
 
         telemetry.addData("Testing:", "IMU");
         telemetry.update();
-
-        //move.forward(12);
-        //move.pivotRight(90);
-        //move.pivotLeft(90);
+        
+        ((NormalDriveIMU) move).moveForwardOffBalance();
+        
+        left.setPower(0.2);
+        right.setPower(0.2);
+        wait(2000);
+        
+        left.setPower(-0.2);
+        wait(10000);
+        
+        move.pivotRight(180);
+        move.pivotLeft(180);
+        
         move.forward(12);
-        //move.backward(1000);
-        //move.backward(12);
-        //move.pivotRight(90);
-        //move.forward(12);
-        //move.pivotRight(90);
-        //move.backward(12);
-        //move.pivotRight(90);
-        //move.pivotLeft(360);
-
-        //move.pivotRight(45);
-        //move.forward(6);
-        //move.backward(6);
-        //move.pivotLeft(45);
     }
 
 }
