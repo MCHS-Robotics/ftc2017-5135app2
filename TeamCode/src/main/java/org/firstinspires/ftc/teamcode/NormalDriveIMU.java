@@ -79,7 +79,7 @@ public class NormalDriveIMU implements MovementStrategy {
 
         angOrien = imu.getAngularOrientation();
         L = imu.getAngularVelocity();
-
+        /*
         telemetry.addLine("Position: ");
         telemetry.addData("x: ", pos.x);
         telemetry.addData("y: ", pos.y);
@@ -110,7 +110,7 @@ public class NormalDriveIMU implements MovementStrategy {
         telemetry.addData("Ang3", angOrien.thirdAngle);
         telemetry.addData("Order", angOrien.axesReference.name());
         telemetry.update();
-
+        */
     }
 
     public float velocity(float power) {
@@ -164,6 +164,19 @@ public class NormalDriveIMU implements MovementStrategy {
         while (angOrien.firstAngle < finalAng) {
             update();
         }
+        /*
+        start = normalizeAngle(start);
+        finalAng = normalizeAngle(start);
+        float currentAng = start;
+        if (start > finalAng) {
+            pivotRight(start - finalAng);
+            return;
+        }
+        while (currentAng < finalAng) {
+            update();
+            currentAngle = normalizeAngle(angOrien.firstAngle);
+        }
+        */
         right.setPower(0);
         left.setPower(0);
     }
@@ -190,15 +203,34 @@ public class NormalDriveIMU implements MovementStrategy {
         while (angOrien.firstAngle > finalAng) {
             update();
         }
+        /*
+        start = normalizeAngle(start);
+        finalAng = normalizeAngle(start);
+        float currentAng = start;
+        if (start < finalAng) {
+            pivotLeft(finalAng - start);
+            return;
+        }
+        while (currentAng > finalAng) {
+            update();
+            currentAngle = normalizeAngle(angOrien.firstAngle);
+        }
+        */
         right.setPower(0);
         left.setPower(0);
+    }
+    
+    public float normalizeAngle(float deg) {
+        deg += 360;
+        deg %= 360;
+        return deg;
     }
 
     public void moveForwardOffBalance() {
         right.setPower(power);
         left.setPower(power);
-        while (grav.zAccel < 0.05);
-        while (grav.zAccel > 0.05);
+        while (grav.zAccel < 0.05) update();
+        while (grav.zAccel > 0.05) update();
         right.setPower(0);
         left.setPower(0);
     }
