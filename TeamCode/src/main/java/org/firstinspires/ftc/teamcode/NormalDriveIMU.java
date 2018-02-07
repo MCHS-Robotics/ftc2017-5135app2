@@ -197,8 +197,8 @@ public class NormalDriveIMU implements MovementStrategy {
     public void moveForwardOffBalance() {
         right.setPower(power);
         left.setPower(power);
-        while (grav.yAccel < 0.05);
-        while (grav.yAccel > 0.05);
+        while (grav.zAccel < 0.05);
+        while (grav.zAccel > 0.05);
         right.setPower(0);
         left.setPower(0);
     }
