@@ -23,5 +23,7 @@ public class BlueSideAuto extends GeneralAuto {
         move.backward(12);
         move.pivotLeft(90);
         move.forward(36);
+        move.pivotLeft(90);
+        move.forward(10);
     }
 }
