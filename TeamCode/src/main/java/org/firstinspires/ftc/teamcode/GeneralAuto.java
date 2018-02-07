@@ -23,7 +23,7 @@ public abstract class GeneralAuto extends LinearOpMode {
     protected ColorSensor colorSensor = null;
     protected MovementStrategy move;
 
-    public static final float power = 0.15f;
+    public static final float power = 0.2f;
 
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -85,11 +85,14 @@ public abstract class GeneralAuto extends LinearOpMode {
         left.setPower(0);
         right.setPower(0);
         if (!isStopRequested()) {
-            left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             // knocks off jewel if detected
-            if (Math.abs(colorSensor.red() - colorSensor.blue()) >= 20)
+            if (Math.abs(colorSensor.red() - colorSensor.blue()) >= 20) {
+                telemetry.addData("Update", "Jewel Detected");
+                telemetry.update();
                 knockOffJewel(colorSensor.red() > colorSensor.blue());
+            }
         }
         jewel.setPosition(0);
         sleep(250);
@@ -150,4 +153,3 @@ public abstract class GeneralAuto extends LinearOpMode {
         telemetry.update();
     }
 }
-

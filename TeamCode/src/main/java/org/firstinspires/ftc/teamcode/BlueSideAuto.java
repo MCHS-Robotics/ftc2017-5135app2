@@ -20,7 +20,7 @@ public class BlueSideAuto extends GeneralAuto {
 
     @Override
     protected void scoreGlyphAndPark() {
-        move.backward(6);
+        move.backward(12);
         move.pivotLeft(90);
         move.forward(36);
     }

@@ -57,7 +57,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 @Autonomous(name="Auto_Drive_Test", group="Linear Opmode")
-public abstract class AutoDriveTest extends LinearOpMode {
+public class AutoDriveTest extends LinearOpMode {
 
     // Declare OpMode members.
     protected ElapsedTime runtime = new ElapsedTime();
@@ -92,20 +92,20 @@ public abstract class AutoDriveTest extends LinearOpMode {
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        move = new NormalDriveEncoders(right, left, telemetry, 0.15f);
+        //move = new NormalDriveEncoders(right, left, telemetry, 0.15f);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
-        telemetry.addData("Testing:", "Encoders");
-        telemetry.update();
+        //telemetry.addData("Testing:", "Encoders");
+        //telemetry.update();
         /*
         move.forward(12);
         move.pivotRight(90);
         move.backward(12);
         move.pivotRight(90);
-        move.forward(6);
+        move.forward(12);
         move.pivotRight(90);
         move.backward(12);
         move.pivotRight(90);
@@ -115,24 +115,28 @@ public abstract class AutoDriveTest extends LinearOpMode {
         move.backward(6);
         move.pivotLeft(45);
         */
-        move = new NormalDriveIMU(right, left, telemetry, 0.15f, hardwareMap);
+        move = new NormalDriveIMU(right, left, telemetry, 0.2f, hardwareMap);
 
         telemetry.addData("Testing:", "IMU");
         telemetry.update();
 
+        //move.forward(12);
+        //move.pivotRight(90);
+        //move.pivotLeft(90);
         move.forward(12);
-        move.pivotRight(90);
-        move.backward(12);
-        move.pivotRight(90);
-        move.forward(6);
-        move.pivotRight(90);
-        move.backward(12);
-        move.pivotRight(90);
+        //move.backward(1000);
+        //move.backward(12);
+        //move.pivotRight(90);
+        //move.forward(12);
+        //move.pivotRight(90);
+        //move.backward(12);
+        //move.pivotRight(90);
+        //move.pivotLeft(360);
 
-        move.pivotRight(45);
-        move.forward(6);
-        move.backward(6);
-        move.pivotLeft(45);
+        //move.pivotRight(45);
+        //move.forward(6);
+        //move.backward(6);
+        //move.pivotLeft(45);
     }
 
 }
