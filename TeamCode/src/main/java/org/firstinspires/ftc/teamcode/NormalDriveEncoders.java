@@ -21,6 +21,9 @@ public class NormalDriveEncoders implements MovementStrategy {
         this.left = left;
         this.right = right;
         this.telemetry = telemetry;
+        this.power = power;
+        this.left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public void forward(float in) {
@@ -90,5 +93,5 @@ public class NormalDriveEncoders implements MovementStrategy {
     {
        pivotLeft(-degrees);
     }
-
+    public void setPower(float a) {power = a;}
 }

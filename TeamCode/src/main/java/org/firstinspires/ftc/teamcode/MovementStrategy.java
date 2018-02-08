@@ -11,4 +11,6 @@ public interface MovementStrategy {
 
     public void pivotLeft(float amount);
     public void pivotRight(float amount);
+
+    public void setPower(float power);
 }

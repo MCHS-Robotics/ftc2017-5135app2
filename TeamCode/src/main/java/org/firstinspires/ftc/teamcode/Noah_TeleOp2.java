@@ -126,6 +126,9 @@ public class Noah_TeleOp2 extends OpMode
         double turn  =  gamepad1.right_stick_x;
         frontleft.setPower(Range.clip(drive + turn, -1.0, 1.0));
         frontright.setPower(Range.clip(drive - turn, -1.0, 1.0));
+        telemetry.addData("Right", frontright.getCurrentPosition());
+        telemetry.addData("Left", frontleft.getCurrentPosition());
+        telemetry.update();
         if(gamepad2.x)
         {
             pincher.setPower(-1);

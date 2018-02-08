@@ -149,6 +149,7 @@ public class NormalDriveIMU implements MovementStrategy {
         amount -= 5;
         float start = angOrien.firstAngle;
         float finalAng = start + amount;
+
         if (finalAng > 180) {
             if (angOrien.firstAngle < 0) {
                 while (angOrien.firstAngle < 0)
@@ -164,17 +165,18 @@ public class NormalDriveIMU implements MovementStrategy {
         while (angOrien.firstAngle < finalAng) {
             update();
         }
+
         /*
         start = normalizeAngle(start);
         finalAng = normalizeAngle(start);
         float currentAng = start;
-        if (start > finalAng) {
-            pivotRight(start - finalAng);
-            return;
+        while (currentAng > finalAng) {
+            update();
+            currentAng = normalizeAngle(angOrien.firstAngle);
         }
         while (currentAng < finalAng) {
             update();
-            currentAngle = normalizeAngle(angOrien.firstAngle);
+            currentAng = normalizeAngle(angOrien.firstAngle);
         }
         */
         right.setPower(0);
@@ -189,6 +191,7 @@ public class NormalDriveIMU implements MovementStrategy {
         float finalAng = start - amount;
         right.setPower(power);
         left.setPower(-power);
+
         if (finalAng < -180) {
             if (angOrien.firstAngle > 0) {
                 while (angOrien.firstAngle > 0) {
@@ -203,17 +206,18 @@ public class NormalDriveIMU implements MovementStrategy {
         while (angOrien.firstAngle > finalAng) {
             update();
         }
+
         /*
         start = normalizeAngle(start);
         finalAng = normalizeAngle(start);
         float currentAng = start;
-        if (start < finalAng) {
-            pivotLeft(finalAng - start);
-            return;
+        while (currentAng < finalAng) {
+            update();
+            currentAng = normalizeAngle(angOrien.firstAngle);
         }
         while (currentAng > finalAng) {
             update();
-            currentAngle = normalizeAngle(angOrien.firstAngle);
+            currentAng = normalizeAngle(angOrien.firstAngle);
         }
         */
         right.setPower(0);
@@ -234,4 +238,7 @@ public class NormalDriveIMU implements MovementStrategy {
         right.setPower(0);
         left.setPower(0);
     }
+
+    public void setPower(float power) {this.power = power;}
+
 }

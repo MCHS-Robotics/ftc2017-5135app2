@@ -106,5 +106,5 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
             // pivotLeft(-degrees);
         }
-
+        public void setPower(float a){power = a;}
     }

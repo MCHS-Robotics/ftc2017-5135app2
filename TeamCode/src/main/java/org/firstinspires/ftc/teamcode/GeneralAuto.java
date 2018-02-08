@@ -23,7 +23,6 @@ public abstract class GeneralAuto extends LinearOpMode {
     protected ColorSensor colorSensor = null;
     protected MovementStrategy move;
 
-    public static final float power = 0.2f;
 
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -41,14 +40,14 @@ public abstract class GeneralAuto extends LinearOpMode {
         lift = hardwareMap.dcMotor.get("lift");
         jewel = hardwareMap.servo.get("jewel");
         colorSensor = hardwareMap.colorSensor.get("color");
-        right.setDirection(DcMotor.Direction.REVERSE);
+        left.setDirection(DcMotor.Direction.REVERSE);
         pincher.setDirection(DcMotor.Direction.REVERSE);
         lift.setDirection(DcMotor.Direction.REVERSE);
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
-        move = new NormalDriveTime(right, left, telemetry, power);
+        move = new NormalDriveEncoders(right, left, telemetry, 0.4f);
 
 
 //        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -72,11 +71,11 @@ public abstract class GeneralAuto extends LinearOpMode {
         left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         telemetry.addData("Position", jewel.getPosition());
-        left.setPower(-power);
-        right.setPower(-power);
+        left.setPower(-0.12f);
+        right.setPower(-0.12f);
         colorSensor.enableLed(true);
         // until a color is detected or 2 seconds have elapsed
-        while (runtime.milliseconds() < 2000 && Math.abs(colorSensor.red() - colorSensor.blue()) < 25 && !isStopRequested()) {
+        while (runtime.milliseconds() < 2000 && Math.abs(colorSensor.red() - colorSensor.blue()) < 20 && !isStopRequested()) {
             telemetry.addData("Red", colorSensor.red());
             telemetry.addData("Blue", colorSensor.blue());
             telemetry.update();

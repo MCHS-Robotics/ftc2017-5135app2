@@ -56,7 +56,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@Teleop(name="Auto_Drive_Test", group="Linear Opmode")
+@Autonomous(name="Auto_Drive_Test", group="Linear Opmode")
 public class AutoDriveTest extends LinearOpMode {
 
     // Declare OpMode members.
@@ -86,7 +86,7 @@ public class AutoDriveTest extends LinearOpMode {
         lift = hardwareMap.dcMotor.get("lift");
         jewel = hardwareMap.servo.get("jewel");
         colorSensor = hardwareMap.colorSensor.get("color");
-        right.setDirection(DcMotor.Direction.REVERSE);
+        left.setDirection(DcMotor.Direction.REVERSE);
         pincher.setDirection(DcMotor.Direction.REVERSE);
         lift.setDirection(DcMotor.Direction.REVERSE);
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -95,24 +95,27 @@ public class AutoDriveTest extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-        move = new NormalDriveIMU(right, left, telemetry, 0.2f, hardwareMap);
+        move = new NormalDriveEncoders(right, left, telemetry, 0.4f);
 
         telemetry.addData("Testing:", "IMU");
         telemetry.update();
         
-        ((NormalDriveIMU) move).moveForwardOffBalance();
+       // ((NormalDriveIMU) move).moveForwardOffBalance();
         
-        left.setPower(0.2);
-        right.setPower(0.2);
-        wait(2000);
+       // left.setPower(0.2);
+       // right.setPower(0.2);
+       // sleep(2000);
         
-        left.setPower(-0.2);
-        wait(10000);
-        
-        move.pivotRight(180);
-        move.pivotLeft(180);
-        
+       // left.setPower(-0.2);
+       // sleep(10000);
+        //for (int i = 0; i < 12; i++)
+       move.pivotRight(30);
+      // for (int i = 0; i < 12; i++)
+        move.pivotLeft(30);
+
         move.forward(12);
+        
+        //move.forward(12);
     }
 
 }

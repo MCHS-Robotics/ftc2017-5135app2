@@ -12,18 +12,18 @@ public class BlueSideAuto extends GeneralAuto {
     @Override
     protected void knockOffJewel(boolean red) {
         if (red) {
-            move.pivotRight(180);
+            move.pivotRight(90);
         } else {
-            move.pivotLeft(180);
+            move.pivotLeft(270);
         }
     }
 
     @Override
     protected void scoreGlyphAndPark() {
-        move.backward(12);
-        move.pivotLeft(90);
-        move.forward(36);
-        move.pivotLeft(90);
-        move.forward(10);
+       // move.forward(24);
+        //move.pivotLeft(90);
+        //move.backward(12);
+        //move.pivotLeft(90);
+        //move.forward(10);
     }
 }

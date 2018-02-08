@@ -20,10 +20,10 @@ public class RedSideAuto extends GeneralAuto {
 
     @Override
     protected void scoreGlyphAndPark() {
-        move.backward(12);
-        move.pivotRight(90);
-        move.forward(36);
-        move.pivotRight(90);
-        move.forward(10);
+      //  move.backward(12);
+      //  move.pivotRight(90);
+     //   move.forward(36);
+       // move.pivotRight(90);
+       // move.forward(10);
     }
 }
