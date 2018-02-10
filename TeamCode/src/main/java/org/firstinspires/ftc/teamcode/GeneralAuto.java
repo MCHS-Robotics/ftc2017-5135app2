@@ -40,7 +40,7 @@ public abstract class GeneralAuto extends LinearOpMode {
         lift = hardwareMap.dcMotor.get("lift");
         jewel = hardwareMap.servo.get("jewel");
         colorSensor = hardwareMap.colorSensor.get("color");
-        left.setDirection(DcMotor.Direction.REVERSE);
+        right.setDirection(DcMotor.Direction.REVERSE);
         pincher.setDirection(DcMotor.Direction.REVERSE);
         lift.setDirection(DcMotor.Direction.REVERSE);
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -68,8 +68,8 @@ public abstract class GeneralAuto extends LinearOpMode {
         //raise();
         jewel.setPosition(0.55);
         sleep(250);
-        left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addData("Position", jewel.getPosition());
         left.setPower(-0.12f);
         right.setPower(-0.12f);
@@ -93,8 +93,7 @@ public abstract class GeneralAuto extends LinearOpMode {
                 knockOffJewel(colorSensor.red() > colorSensor.blue());
             }
         }
-        jewel.setPosition(0);
-        sleep(250);
+
 
         scoreGlyphAndPark();
     }

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -57,6 +58,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 @Autonomous(name="Auto_Drive_Test", group="Linear Opmode")
+@Disabled
 public class AutoDriveTest extends LinearOpMode {
 
     // Declare OpMode members.
@@ -109,11 +111,11 @@ public class AutoDriveTest extends LinearOpMode {
        // left.setPower(-0.2);
        // sleep(10000);
         //for (int i = 0; i < 12; i++)
-       move.pivotRight(30);
+       move.pivotRight(90);
       // for (int i = 0; i < 12; i++)
-        move.pivotLeft(30);
+//        move.pivotLeft(90);
 
-        move.forward(12);
+        //move.forward(12);
         
         //move.forward(12);
     }

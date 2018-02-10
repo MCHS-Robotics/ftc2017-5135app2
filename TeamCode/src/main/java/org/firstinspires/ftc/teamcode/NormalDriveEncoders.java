@@ -83,6 +83,8 @@ public class NormalDriveEncoders implements MovementStrategy {
             telemetry.addLine();
             telemetry.addData("Target","Left Tar: " + left.getTargetPosition());
             telemetry.update();
+            //telemetry.addData("Target","Right Tar: " + right.getTargetPosition());
+            //telemetry.update();
         }
         left.setPower(0);
         right.setPower(0);
